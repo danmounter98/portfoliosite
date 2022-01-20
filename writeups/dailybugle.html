@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dan Mounter</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#!">Dan Mounter</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page" href="index.html">CTF Writeups</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Techniques</a></li>
+                        <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1" style="color: white">CTF Writeups | Daily Bugle </h1>
+                        </header>
+
+                        <!-- Post content-->
+                        <section class="mb-5" style="color: white">
+                          <div class="content" itemprop="articleBody">
+                                  <p>19/09/21 | Box Difficulty: <span style="color:red">Hard</span>
+                                  </p>
+                                  <h2 class="fw-bolder mb-4 mt-5">Disclaimer</h2>
+                                  <b style="color: red">This article/walkthrough is for informational and educational purposes only. Exploiting information in this website to gain unauthorised access to devices you do not own is illegal and can result in criminal charges. I will not accept responsibility for misuse of this content as you are liable for your own actions. </b>
+
+                                  <h2 class="fw-bolder mb-4 mt-5">Introduction</h2>
+                                  <p>This is a walkthrough for the Daily Bugle box on <a href="https://tryhackme.com/room/dailybugle" target="_blank">TryHackMe.com</a>. I was assigned the IP address <b>10.10.216.37.</b> This room uses artwork that is owned by Sony Pictures. </p>
+
+                                  <h2 class="fw-bolder mb-4 mt-5">#1: Enumeration</h2>
+                                  <p>To begin, I performed a simple Nmap scan on the target. The -A switch enables aggressive OS, service and version enumeration. Although considered a noisy scan, this is suitable for a CTF sceneraio. The -p- switch ensures all ports are targeted.</p>
+
+                                  <!-------------SYNTAX SNIPPET------------->
+                                  <pre style='color:#55cc66;background:#001800;'>nmap <span style='color:#808030; '>-</span>A <span style='color:#808030; '>-</span>p<span style='color:#808030; '>-</span> <span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>163</span>.<span style='color:#778c77; '>171</span></pre>
+                                  <!---------------------------------------->
+                                  <img src="/assets/images/DailyBugle/nmap results.png" alt="Nmap Result" title="NmapResult">
+
+                                  <p>This relatively simple Nmap scan revealed the following open ports.</p>
+                                  <ul>
+                                    <li>Port 22 - OpenSSH 7.4 </li>
+                                    <li>Port 80 - Apache Web Server 2.4.6 / Joomla! Content Management System </li>
+                                    <li>Port 3306 - A MYSQL database</li>
+                                  </ul>
+                                  <p>Further enumeration of the web server using gobuster discovered a large number of directories, including an administrator page. Upon testing the login page with default credentials, it was clear valid credentials were needed, so will return to this later. </p>
+
+                                  <!-------------SYNTAX SNIPPET------------->
+                                  <pre style='color:#55cc66;background:#001800;'>gobuster <span style='color:#508050; font-weight:bold; '>dir</span> <span style='color:#808030; '>-</span>u http<span style='color:#808030; '>:</span><span style='color:#808030; '>/</span><span style='color:#808030; '>/</span><span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>163</span>.<span style='color:#778c77; '>173</span> <span style='color:#808030; '>-</span>w <span style='color:#808030; '>/</span>usr<span style='color:#808030; '>/</span><span style='color:#508050; font-weight:bold; '>share</span><span style='color:#808030; '>/</span>wordlists<span style='color:#808030; '>/</span>dirbuster<span style='color:#808030; '>/</span>directory<span style='color:#808030; '>-</span>list<span style='color:#808030; '>-</span><span style='color:#778c77; '>2</span>.<span style='color:#778c77; '>3</span><span style='color:#808030; '>-</span>medium.txt</pre>
+                                  <!---------------------------------------->
+                                  <p>
+                                    <img src="/assets/images/DailyBugle/gobuster%20output.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+
+                                  <h1>#2: Joomla Exploitation</h1>
+                                  <p>Unfortunately, the Nmap scan was unable to retrieve the version of joomla running, meaning further enumeration is required. <br> I used CMSeeK to scan the joomla CMS, allowing version detection and confirmation of the previously discovered administration page. CMSeeK can be found <a href="https://github.com/Tuhinshubhra/CMSeeK" target="_blank">here</a>. </p>
+
+                                  <!-------------SYNTAX SNIPPET------------->
+                                  <pre style="color:#55cc66;background:#001800;">python3 cmseek.py <span style="color:#808030; ">-</span>u http<span style="color:#808030; ">:</span><span style="color:#808030; ">/</span><span style="color:#808030; ">/</span><span style="color:#778c77; ">10</span>.<span style="color:#778c77; ">10</span>.<span style="color:#778c77; ">163</span>.<span style="color:#778c77; ">171</span></pre>
+                                  <!---------------------------------------->
+                                  <p>
+                                    <img src="/assets/images/DailyBugle/CMseeK%20results.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+                                  <p>Researching this version of joomla led to the discovery of a POC script allowing for SQL injection exploiting CVE-2017-8917. The python script can be found <a href="https://github.com/stefanlucas/Exploit-Joomla" target="_blank">here</a>. For further reading, more information regarding CVE-2017-8917 can be found <a href="https://blog.sucuri.net/2017/05/sql-injection-vulnerability-joomla-3-7.html" target="_blank">here</a>
+                                    <br>
+                                  </p>
+                                  <p>Running the script with the command below returned a username (jonah) and a password hash. </p>
+
+                                  <!-------------SYNTAX SNIPPET------------->
+                                  <pre style='color:#55cc66;background:#001800;'>python joomblah.py http<span style='color:#808030; '>:</span><span style='color:#808030; '>/</span><span style='color:#808030; '>/</span><span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>163</span>.<span style='color:#778c77; '>171</span></pre>
+                                  <!---------------------------------------->
+                                  <p>
+                                    <img src="images/DailyBugle/joomblah%20sqli%20results.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+
+                                  <h1>#3: Hash Cracking</h1>
+                                  <p>This password hash is prefixed with $2$, referencing this against <a href="https://hashcat.net/wiki/doku.php?id=example_hashes" target="_blank">Hashcat's wiki page</a> states that this hash is encoded with the bcrypt hashing algorithm. This can also be confirmed running a simple hashid script, as seen below. </p>
+                                  <p>
+                                    <img src="images/DailyBugle/hashid%20rsult.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+                                  <p>We can now use hashcat to crack this hash, see the syntax below.</p>
+
+                                  <!-------------SYNTAX SNIPPET------------->
+                                  <pre style='color:#55cc66;background:#001800;'>hashcat <span style='color:#808030; '>-</span>m3200 <span style='color:#808030; '>-</span>a0 <span style='color:#808030; '>-</span>o cracked.txt hash.txt <span style='color:#808030; '>/</span>home<span style='color:#808030; '>/</span>kali<span style='color:#808030; '>/</span>wordlists<span style='color:#808030; '>/</span>rockyou.txt</pre>
+                                  <!---------------------------------------->
+                                  <p>The flags used in the hashcat syntax are as follows:</p>
+                                  <ul>
+                                    <li>-m3200 sets the hashmode as bcrypt </li>
+                                    <li>-a0 single attack mode </li>
+                                    <li>-o specifies an output file</li>
+                                    <li>hash.txt file</li>
+                                    <li>path to rockyou.txt</li>
+                                  </ul>
+                                  <p>This can take a long time to crack since bcrypt is naturally tolerent to GPU cracking, however eventually the password will be presented to us.</p>
+                                  <p>
+                                    <img src="images/DailyBugle/cracked%20password.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+
+                                  <h1>#4: Escalation</h1>
+                                  <p>We can now use these credentials to successfully login to the previously discovered adminstrator page.</p>
+                                  <p>
+                                    <img src="images/DailyBugle/login%20page.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+                                  <p>Now we have access to the Joomla CMS, the next #is to search for an internal vulnerablilty to leverage. The ability to perform file uploads is common in CMS sites like Joomla and WordPress, so we search the sitemap for this vector of attack.</p>
+                                  <p>A file upload is found under the extensions sub tab, however uploading a reverse php shell outputted an error. This could suggest a filter is in place to blacklist certain files from being uploaded. </p>
+                                  <p>
+                                    <img src="images/DailyBugle/failed%20joomla%20upload.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+                                  <p>Further searching around the site led to the discovery of a second file upload, under the protostar template. Similar to the first file upload section, uploading a reverse php shell outputted an error. However, we can also create a new blank file. Name the file and ensure php is the selected file type. </p>
+                                  <p>
+                                    <img src="images/DailyBugle/found%20upload%20file%20page.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+                                  <p>We populate the blank field with a php reverse shell ( <a href="https://github.com/pentestmonkey/php-reverse-shell" target="_blank">available here</a>). Don’t forget to assign your local IP address and a port number. Port 443 is a good choice for reverse shells because firewalls expect it to be open. </p>
+                                  <p>
+                                    <img src="images/DailyBugle/pentestmonkeys%20phpreverseshell.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+
+                                  <h1>#5: Initial Shell</h1>
+                                  <p>Now we have a successful shell upload, the next #is to configure a netcat reverse listener for the specifed port, in this case 443. Navigating to http://10.10.163.171/templetes/protostar/reverseshell.php will execute the php script and return a successful shell in the terminal.</p>
+                                  <p>
+                                    <img src="images/DailyBugle/successful%20netcat%20shell.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+                                  <p>Navigating around this shell led to the discovery of two points of interest.</p>
+                                  <ul>
+                                    <li>The user jjameson, located in the /home directory </li>
+                                    <li>A configuration.php file, located in the /var/html/www directory </li>
+                                  </ul>
+                                  <p> Opening this web server configuration file reveals what seems to be a plaintext password.</p>
+                                  <p>
+                                    <img src="images/DailyBugle/discovered%20configuration.php%20file.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+
+                                  <h1>#6: SSH Access</h1>
+                                  <p>With these newly discovered credentials, we can successfully login to the jjameson user account using SSH.</p>
+                                  <p>
+                                    <img src="images/DailyBugle/successful%20ssh%20login.png" alt="SSH" title="SSH">
+                                  </p>
+                                  <p>We now have access to the first user flag.</p>
+                                  <p>
+                                    <img class="img-responsive" src="/images/DailyBugle/flag%201.png" alt="Flag 1" title="Flag 1">
+                                  </p>
+
+                                  <h1>#7: Privilege Escalation </h1>
+                                  <p>Running sudo-l lists commands our current user account is allowed to run. The output of this shows that we can run Yum. Yum is the default SOMETHING </p>
+                                  <p>
+                                    <img class="img-responsive" src="images/DailyBugle/exploitable%20binaries.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+                                  <p>Researching this, we find a gtfobins script which exploits Yum to spawn an interactive root shell. This can be found <a href="https://gtfobins.github.io/gtfobins/yum/" target="_blank">here</a>. </p>
+                                  <p>
+                                    <img class="img-responsive" src="images/DailyBugle/gtfobins%20yum%20script.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+                                  <p>Copying this code into the SSH terminal leverages this vulnerability and we now find we are the root user. We can now access the root flag.</p>
+                                  <p>
+                                    <img class="img-responsive" src="images/DailyBugle/flag2.png" alt="Nmap Result" title="NmapResult">
+                                  </p>
+
+
+
+
+
+
+
+                        </section>
+                    </article>
+
+                </div>
+
+        <!-- Footer-->
+      <!--<footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Dan Mounter 2022</p></div>
+        </footer>-->
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
