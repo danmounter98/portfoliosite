@@ -11311,7 +11311,7 @@ ul.pagination {
     padding: 0;
     margin: 0;
       justify-content: center;
-      display: flex;  
+      display: flex;
 }
 
 ul.pagination li {display: inline;}
@@ -11334,3 +11334,47 @@ ul.pagination li a.active {
 
 ul.pagination li a:hover:not(.active) {color: white; background-color: #1d1f21}
 
+.middle {
+  transition: .1s ease;
+  opacity: 0;
+  position: absolute;
+  top: 40%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+.project:hover .image {
+filter: blur(2px)}
+
+.project:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  background-color: #323232;
+  color: white;
+  font-size: 19px;
+  padding: 17px 32px;
+  border-radius: 7px;
+ font
+}
+
+.project-list {
+  padding: 0;
+  list-style: none;
+}
+.project-list .project-item {
+  margin-bottom: 5px;
+}
+.project-list .project-item p {
+  display: inline;
+}
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .2s ease;
+  backface-visibility: hidden;
+}
