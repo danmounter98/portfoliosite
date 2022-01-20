@@ -20,9 +20,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page" href="index.html">CTF Writeups</a></li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page" href="/index.html">CTF Writeups</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">Techniques</a></li>
-                        <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
 
                     </ul>
                 </div>
@@ -57,7 +57,7 @@
                                   <!-------------SYNTAX SNIPPET------------->
                                   <pre style='color:#55cc66;background:#001800;'>nmap <span style='color:#808030; '>-</span>A <span style='color:#808030; '>-</span>p<span style='color:#808030; '>-</span> <span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>163</span>.<span style='color:#778c77; '>171</span></pre>
                                   <!---------------------------------------->
-                                  <img src="/assets/images/DailyBugle/nmap results.png" alt="Nmap Result" title="NmapResult">
+                                  <img src="/assets/images/DailyBugle/nmap results.png" alt="Nmap Result" title="Nmap Result">
 
                                   <p>This relatively simple Nmap scan revealed the following open ports.</p>
                                   <ul>
@@ -70,19 +70,17 @@
                                   <!-------------SYNTAX SNIPPET------------->
                                   <pre style='color:#55cc66;background:#001800;'>gobuster <span style='color:#508050; font-weight:bold; '>dir</span> <span style='color:#808030; '>-</span>u http<span style='color:#808030; '>:</span><span style='color:#808030; '>/</span><span style='color:#808030; '>/</span><span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>163</span>.<span style='color:#778c77; '>173</span> <span style='color:#808030; '>-</span>w <span style='color:#808030; '>/</span>usr<span style='color:#808030; '>/</span><span style='color:#508050; font-weight:bold; '>share</span><span style='color:#808030; '>/</span>wordlists<span style='color:#808030; '>/</span>dirbuster<span style='color:#808030; '>/</span>directory<span style='color:#808030; '>-</span>list<span style='color:#808030; '>-</span><span style='color:#778c77; '>2</span>.<span style='color:#778c77; '>3</span><span style='color:#808030; '>-</span>medium.txt</pre>
                                   <!---------------------------------------->
-                                  <p>
-                                    <img src="/assets/images/DailyBugle/gobuster%20output.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
+                                    <img src="/assets/images/DailyBugle/gobuster%20output.png" alt="Gobuster Output" title="Gobuster Output">
 
-                                  <h1>#2: Joomla Exploitation</h1>
+                                  <h2 class="fw-bolder mb-4 mt-5">#2: Joomla Exploitation</h2>
                                   <p>Unfortunately, the Nmap scan was unable to retrieve the version of joomla running, meaning further enumeration is required. <br> I used CMSeeK to scan the joomla CMS, allowing version detection and confirmation of the previously discovered administration page. CMSeeK can be found <a href="https://github.com/Tuhinshubhra/CMSeeK" target="_blank">here</a>. </p>
 
                                   <!-------------SYNTAX SNIPPET------------->
                                   <pre style="color:#55cc66;background:#001800;">python3 cmseek.py <span style="color:#808030; ">-</span>u http<span style="color:#808030; ">:</span><span style="color:#808030; ">/</span><span style="color:#808030; ">/</span><span style="color:#778c77; ">10</span>.<span style="color:#778c77; ">10</span>.<span style="color:#778c77; ">163</span>.<span style="color:#778c77; ">171</span></pre>
                                   <!---------------------------------------->
-                                  <p>
-                                    <img src="/assets/images/DailyBugle/CMseeK%20results.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
+
+                                    <img src="/assets/images/DailyBugle/CMseeK%20results.png" alt="CMSeeK Result" title="CMSeeK Results">
+
                                   <p>Researching this version of joomla led to the discovery of a POC script allowing for SQL injection exploiting CVE-2017-8917. The python script can be found <a href="https://github.com/stefanlucas/Exploit-Joomla" target="_blank">here</a>. For further reading, more information regarding CVE-2017-8917 can be found <a href="https://blog.sucuri.net/2017/05/sql-injection-vulnerability-joomla-3-7.html" target="_blank">here</a>
                                     <br>
                                   </p>
@@ -91,15 +89,15 @@
                                   <!-------------SYNTAX SNIPPET------------->
                                   <pre style='color:#55cc66;background:#001800;'>python joomblah.py http<span style='color:#808030; '>:</span><span style='color:#808030; '>/</span><span style='color:#808030; '>/</span><span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>163</span>.<span style='color:#778c77; '>171</span></pre>
                                   <!---------------------------------------->
-                                  <p>
-                                    <img src="images/DailyBugle/joomblah%20sqli%20results.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
 
-                                  <h1>#3: Hash Cracking</h1>
+                                    <img src="/assets/images/DailyBugle/joomblah%20sqli%20results.png" alt="Nmap Result" title="NmapResult"style="width:80%;height:80%;" >
+
+
+                                  <h2 class="fw-bolder mb-4 mt-5">#3: Hash Cracking</h2>
                                   <p>This password hash is prefixed with $2$, referencing this against <a href="https://hashcat.net/wiki/doku.php?id=example_hashes" target="_blank">Hashcat's wiki page</a> states that this hash is encoded with the bcrypt hashing algorithm. This can also be confirmed running a simple hashid script, as seen below. </p>
-                                  <p>
-                                    <img src="images/DailyBugle/hashid%20rsult.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
+
+                                    <img src="images/DailyBugle/hashid%20rsult.png" alt="HashID Result" title="HashID Result">
+
                                   <p>We can now use hashcat to crack this hash, see the syntax below.</p>
 
                                   <!-------------SYNTAX SNIPPET------------->
@@ -114,67 +112,47 @@
                                     <li>path to rockyou.txt</li>
                                   </ul>
                                   <p>This can take a long time to crack since bcrypt is naturally tolerent to GPU cracking, however eventually the password will be presented to us.</p>
-                                  <p>
-                                    <img src="images/DailyBugle/cracked%20password.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
 
-                                  <h1>#4: Escalation</h1>
+                                  <img src="/assets/images/DailyBugle/cracked%20password.png" alt="Cracked Password" title="Cracked Password">
+
+
+                                  <h2 class="fw-bolder mb-4 mt-5">#4: Escalation</h2>
                                   <p>We can now use these credentials to successfully login to the previously discovered adminstrator page.</p>
-                                  <p>
-                                    <img src="images/DailyBugle/login%20page.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
+                                  <img src="/assets/images/DailyBugle/login%20page.png" alt="Login Page Result" title="Login page">
+
                                   <p>Now we have access to the Joomla CMS, the next #is to search for an internal vulnerablilty to leverage. The ability to perform file uploads is common in CMS sites like Joomla and WordPress, so we search the sitemap for this vector of attack.</p>
                                   <p>A file upload is found under the extensions sub tab, however uploading a reverse php shell outputted an error. This could suggest a filter is in place to blacklist certain files from being uploaded. </p>
-                                  <p>
-                                    <img src="images/DailyBugle/failed%20joomla%20upload.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
-                                  <p>Further searching around the site led to the discovery of a second file upload, under the protostar template. Similar to the first file upload section, uploading a reverse php shell outputted an error. However, we can also create a new blank file. Name the file and ensure php is the selected file type. </p>
-                                  <p>
-                                    <img src="images/DailyBugle/found%20upload%20file%20page.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
-                                  <p>We populate the blank field with a php reverse shell ( <a href="https://github.com/pentestmonkey/php-reverse-shell" target="_blank">available here</a>). Don’t forget to assign your local IP address and a port number. Port 443 is a good choice for reverse shells because firewalls expect it to be open. </p>
-                                  <p>
-                                    <img src="images/DailyBugle/pentestmonkeys%20phpreverseshell.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
+                                  <img src="/assets/images/DailyBugle/failed%20joomla%20upload.png" alt="Nmap Result" title="NmapResult">
 
-                                  <h1>#5: Initial Shell</h1>
+                                  <p>Further searching around the site led to the discovery of a second file upload, under the protostar template. Similar to the first file upload section, uploading a reverse php shell outputted an error. However, we can also create a new blank file. Name the file and ensure php is the selected file type. </p>
+                                    <img src="/assets/images/DailyBugle/found%20upload%20file%20page.png" alt="Nmap Result" title="NmapResult">
+                                  <p>We populate the blank field with a php reverse shell ( <a href="https://github.com/pentestmonkey/php-reverse-shell" target="_blank">available here</a>). Don’t forget to assign your local IP address and a port number. Port 443 is a good choice for reverse shells because firewalls expect it to be open. </p>
+                                    <img src="/assets/images/DailyBugle/pentestmonkeys%20phpreverseshell.png" alt="Nmap Result" title="NmapResult">
+
+                                  <h2 class="fw-bolder mb-4 mt-5">#5: Initial Shell</h2>
                                   <p>Now we have a successful shell upload, the next #is to configure a netcat reverse listener for the specifed port, in this case 443. Navigating to http://10.10.163.171/templetes/protostar/reverseshell.php will execute the php script and return a successful shell in the terminal.</p>
-                                  <p>
-                                    <img src="images/DailyBugle/successful%20netcat%20shell.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
+                                    <img src="/assets/images/DailyBugle/successful%20netcat%20shell.png" alt="Nmap Result" title="NmapResult">
                                   <p>Navigating around this shell led to the discovery of two points of interest.</p>
                                   <ul>
                                     <li>The user jjameson, located in the /home directory </li>
                                     <li>A configuration.php file, located in the /var/html/www directory </li>
                                   </ul>
                                   <p> Opening this web server configuration file reveals what seems to be a plaintext password.</p>
-                                  <p>
-                                    <img src="images/DailyBugle/discovered%20configuration.php%20file.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
+                                    <img src="/assets/images/DailyBugle/discovered%20configuration.php%20file.png" alt="Nmap Result" title="NmapResult">
 
-                                  <h1>#6: SSH Access</h1>
+                                  <h2 class="fw-bolder mb-4 mt-5">#6: SSH Access</h2>
                                   <p>With these newly discovered credentials, we can successfully login to the jjameson user account using SSH.</p>
-                                  <p>
-                                    <img src="images/DailyBugle/successful%20ssh%20login.png" alt="SSH" title="SSH">
-                                  </p>
+                                    <img src="/assets/images/DailyBugle/successful%20ssh%20login.png" alt="SSH" title="SSH">
                                   <p>We now have access to the first user flag.</p>
-                                  <p>
-                                    <img class="img-responsive" src="/images/DailyBugle/flag%201.png" alt="Flag 1" title="Flag 1">
-                                  </p>
+                                    <img class="img-responsive" src="/assets/images/DailyBugle/flag%201.png" alt="Flag 1" title="Flag 1">
 
-                                  <h1>#7: Privilege Escalation </h1>
-                                  <p>Running sudo-l lists commands our current user account is allowed to run. The output of this shows that we can run Yum. Yum is the default SOMETHING </p>
-                                  <p>
-                                    <img class="img-responsive" src="images/DailyBugle/exploitable%20binaries.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
-                                  <p>Researching this, we find a gtfobins script which exploits Yum to spawn an interactive root shell. This can be found <a href="https://gtfobins.github.io/gtfobins/yum/" target="_blank">here</a>. </p>
-                                  <p>
-                                    <img class="img-responsive" src="images/DailyBugle/gtfobins%20yum%20script.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
+                                  <h2 class="fw-bolder mb-4 mt-5">#7: Privilege Escalation </h2>
+                                  <p>Running sudo-l lists commands our current user account is allowed to run. The output of this shows that we can run Yum.  </p>
+                                    <img class="img-responsive" src="/assets/images/DailyBugle/exploitable%20binaries.png" alt="Exploitable Binaries" title="Exploitable Binaries"style="width:80%;height:100%;">
+                                  <p>Researching this, we find a gtfobins script which exploits Yum to spawn an interactive root shell. This can be found <a href="https://gtfobins.github.io/gtfobins/yum/" target="_blank">here</a>.
+                                  </p>                                   <img class="img-responsive" src="/assets/images/DailyBugle/gtfobins%20yum%20script.png" alt="Nmap Result" title="NmapResult"style="width:80%;height:80%;">
                                   <p>Copying this code into the SSH terminal leverages this vulnerability and we now find we are the root user. We can now access the root flag.</p>
-                                  <p>
-                                    <img class="img-responsive" src="images/DailyBugle/flag2.png" alt="Nmap Result" title="NmapResult">
-                                  </p>
+                                    <img class="img-responsive" src="/assets/images/DailyBugle/flag2.png" alt="Nmap Result" title="NmapResult"style="width:40%;height:40%;">
 
 
 
