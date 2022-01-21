@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dan Mounter</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/assets/images/favicon.png" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/index.html">Dan Mounter</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page" href="/index.html">CTF Writeups</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Techniques</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1" style="color: white">CTF Writeups | Zeno </h2>
+                        </header>
+
+                        <!-- Post content-->
+                        <section class="mb-5" style="color: white">
+                          <div class="content" itemprop="articleBody">
+                <p class="fs-5 mb-4">02/11/21 | Box Difficulty: <span style="color:#F28C28">Medium</span>
+                </p>
+                <h2 2 class="fw-bolder mb-4 mt-5">Disclaimer</h2>
+                <b style="color: red" class="fs-5 mb-4">This article/walkthrough is for informational and educational purposes only. Exploiting information in this website to gain unauthorised access to devices you do not own is illegal and can result in criminal charges. I will not accept responsibility for misuse of this content as you are liable for your own actions. </b>
+
+                <h2 class="fw-bolder mb-4 mt-5">Introduction</h2>
+                <p class="fs-5 mb-4">This is a walkthrough for the Zeno box on <a href="https://tryhackme.com/room/zeno" target="_blank">TryHackMe.com</a>. I was assigned the IP address <b>10.10.138.170</b> </p>
+
+                <h2 class="fw-bolder mb-4 mt-5">#1: Scanning and Enumeration</h2>
+
+                <p class="fs-5 mb-4"> Beginning with an Nmap scan, we discover two open ports. Unusually, a web server is running on port 12340. However, navigating to http://10.10.138.170:12340 presents a 404 error.</p>
+
+
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/nmap%20results.png" alt="#" title="Nmap Scan" style="width:70%;height:90%;">
+                </p>
+
+               <p class="fs-5 mb-4">Futher analysis with Gobuster reveals a /rms/ route which hosts a Restaurant Management System. </p>
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/gobuster.png" alt="#" title="Gobuster" style="width:70%;height:90%;">
+                </p>
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/rms.png" alt="#" title="RMS Website" style="width:70%;height:60%;">
+                </p>
+                <h2 class="fw-bolder mb-4 mt-5">#3 Inital Access</h2>
+
+                <p class="fs-5 mb-4">Browsing this sitemap didn't lead to any clear methods of gaining foothold, however running searchsploit returned a RCE exploit.</p>
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/rms%20searchsploit.png" alt="#" title="Searchsploit" style="width:80%;height:60%;">
+                </p>
+
+        <p class="fs-5 mb-4">Unfortunately I couldn't get this to work so instead used a custom payload script developed by BJConway, see link  <a href="https://github.com/BJConway/thm_writeups/blob/main/challenges/zeno/rms_exploit.py" target="_blank">here</a>.  </p>
+
+
+
+
+
+
+
+
+
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/python%20payload.png" alt="#" title="RMS Payload" style="width:60%;height:60%;">
+                </p>
+                  <p class="fs-5 mb-4">Running this script successfully presents us with a basic reverse shell when combined with a netcat listener.</p>
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/successful%20callback.png" alt="#" title="Successful Reverse Shell" style="width:60%;height:60%;">
+                </p>
+
+                  <p class="fs-5 mb-4">Now we have inital access, we look for points of possible privilege escalation. As seen in the screenshot below, we are able to cat the /etc/passwd file; presenting the username Edward.</p>
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/etcpasswd.png" alt="#" title="etc/passwd" style="width:60%;height:60%;">
+                </p>
+
+                <p class="fs-5 mb-4">I then uploaded Linpeas to automate discovery of privilege escalation techniques. This was done through hosting the script on a simple Python server, and using curl to download the script to the shell.</p>
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/upload%20linpeas.png" alt="#" title="Upload Linpeas.sh" style="width:80%;height:80%;">
+                </p>
+
+                <h2 class="fw-bolder mb-4 mt-5">#4: Linpeas Analysis</h2>
+
+                  <p class="fs-5 mb-4">Running Linpeas reveals a writeable service configuration file located in /etc/systemd/system. Along with this, we also find a password for the user Zeno in /etc/fstab.</p>
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/linpeas%20output%202.png" alt="#" title="Linpeas Results" style="width:90%;height:90%;">
+                </p>
+
+
+                <p class="fs-5 mb-4">Now we have a username and password we can attempt to establish a SSH connection. We know SSH is running on this machine from the nmap scan returning port 22 open. The username Zeno didn't work with the password, however the username Edward was successful. </p>
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/ssh%20to%20edward.png" alt="#" title="SSH to Edward" style="width:80%;height:70%;">
+                </p>
+                <p class="fs-5 mb-4">With this stable shell, we can navigate around and locate the user flag. </p>
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/user%20flag.png" alt="#" title="User Flag" style="width:40%;height:70%;">
+                </p>
+                <h2 class="fw-bolder mb-4 mt-5">#6: Privilege Escalation</h2>
+
+        <p class="fs-5 mb-4">Running sudo -l lists commands the current user can run as sudo. Here we discover the user Edward is authorised to run the reboot binary as sudo. </p>
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/sudo%20-l.png" alt="#" title="Output of sudo -l" style="width:80%;height:70%;">
+                </p>
+
+        <p class="fs-5 mb-4">As previously discovered from Linpeas, the zeno-monitoring.service file is world writable, meaning this can be a payload vector. As seen below, the file activates a script upon reboot.</p>
+
+
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/open%20zeno-monitoring%20serivce.png" alt="#" title="Vulnerable service" style="width:50%;height:80%;">
+                </p>
+        <p class="fs-5 mb-4">We edit the file with Vim to generate a root shell under the ExecStart command</p>
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/edited%20execstart%20.png" alt="#" title="Exploited service to gain root access" style="width:70%;height:80%;">
+                </p>
+        <p class="fs-5 mb-4">As Edward can access the /usr/sbin/reboot binary, we can successfully restart the system and log in through SSH again. As seen below the rootShell payload can now be exploited, returning us with the root user.</p>
+
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/successful%20privesc.png" alt="#" title="Successful privesc" style="width:80%;height:80%;">
+                </p>
+                <p class="fs-5 mb-4">
+                  <img src="/assets/images/Zeno/root%20flag.png" alt="#" title="Root Flag" style="width:50%;height:80%;">
+                </p>
+                        </section>
+                    </article>
+
+                </div>
+
+        <!-- Footer-->
+      <!--<footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Dan Mounter 2022</p></div>
+        </footer>-->
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
