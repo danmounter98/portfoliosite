@@ -15,14 +15,14 @@
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="/index.html"> Dan Mounter</a>
+                <a class="navbar-brand" href="/../../index.html"> Dan Mounter</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page" href="index.html">CTF Writeups</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/techniques.html">Techniques</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/../../about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page" href="/../../index.html">CTF Writeups</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/../../techniques.html">Techniques</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/../../projects.html">Projects</a></li>
                     </ul>
                 </div>
             </div>
@@ -46,6 +46,12 @@
 
                         <!-- Post content-->
                         <section class="mb-5" style="color: white">
+
+                          <h2 class="fw-bolder mb-4 mt-5"> Automated Enumeration Tools</h2>
+                             <p class="fs-5 mb-4"> The following scripts are used to search for possible paths to escalate privileges on Linux/Unix/MacOS hosts. More info can be found
+                              <a href="https://book.hacktricks.xyz/linux-unix/privilege-escalation" target="_blank">here</a>. </p> <p class="fs-5 mb-4">The tools effectiveness depends on the environment, for example a tool written in Python will not work if Python is not installed on the target system.</p>
+
+
                           <ol class="fs-5 mb-4">
                               <img src="/assets/images/imageprivilege.png" title="Privilege Escalation" style="width:25%;height:60%;float: right;margin-right: 150px">
                             <li><a href=" https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS" target="_blank">LinPeas</a></li>
@@ -53,10 +59,10 @@
                             <li><a href="https://github.com/mzet-/linux-exploit-suggester" target="_blank">LES (Linux Exploit Suggester)</a></li>
                             <li><a href="https://github.com/diego-treitos/linux-smart-enumeration" target="_blank">Linux Smart Enumeration</a></li>       <li><a href="https://github.com/linted/linuxprivchecker" target="_blank">Linux Priv Checker</a></li>
                           </ol>
-                          <br>
 
 
-        <h2> Manual Enumeration Commands</h2>
+
+        <h2 class="fw-bolder mb-4 mt-5"> Manual Enumeration Commands</h2>
 
         <p class="fs-5 mb-4">                 These basic commands can be used to discover misconfigurations which can lead to privilege escalation. Depending on the target environment some commands can be restricted, for example the /etc/shadow file is usually protected.</p>
                           <table class="table table-bordered table-dark">
@@ -66,7 +72,7 @@
                                 <th scope="col">Description</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="fs-5 mb-4">
                               <tr>
                                 <td>hostname</td>
                                 <td>prints the hostname of target machine</td>
@@ -128,26 +134,18 @@
                 <div class="col-lg-4">
                   <br>
                   <br>
-                    <!-- Search widget-->
-                    <div class="card mb-4" style="background-color: #212529">
-                        <div class="card-header" style="color: white">Search</div>
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                            </div>
-                        </div>
-                    </div>
                     <!-- Categories widget-->
                     <div class="card mb-4" style="background-color: #212529">
                         <div class="card-header" style="color: white">Privilege Escalation Vectors</div>
                         <div class="card-body">
+                          <p style="color: white"> There are 6 main vectors of Linux privilege escalation. The following sections explore each vector in a CTF scenario.
+</p>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Sudo</a></li>
-                                        <li><a href="#!">Kernel exploits</a></li>
-                                        <li><a href="#!">SUID</a></li>
+                                        <li><a href="/privilege-escalation/linux/sudo.html">Sudo</a></li>
+                                        <li><a href="/privilege-escalation/linux/kernel.html">Kernel exploits</a></li>
+                                        <li><a href="/privilege-escalation/linux/suid.html">SUID</a></li>
                                     </ul>
                                 </div>
                                 <div class="col-sm-6" style="background-color: #212529">
@@ -173,7 +171,7 @@
         </div>
  <br> <br>
         <!-- Footer-->
-        <footer class="py-5 bg-dark fixed-bottom">
+        <footer class="py-5 bg-dark static-bottom">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Dan Mounter 2022</p></div>
         </footer>
         <!-- Bootstrap core JS-->
