@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dan Mounter</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="/index.html"> Dan Mounter</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page" href="index.html">CTF Writeups</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/techniques.html">Techniques</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Post content-->
+                    <article>
+                      <br>
+                      <br>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1" style="color: white">Linux Privilege Escalation</h1>
+                            <p class="fs-5 mb-4" style="color: white">These pages follow the Linux PrivEsc room on
+                  <a href="https://tryhackme.com/room/linprivesc" target="_blank">TryHackMe</a>. I found these rooms very useful in learning new escalation techniques so decided to writeup information here.</p>
+
+                        </header>
+
+                        <!-- Post content-->
+                        <section class="mb-5" style="color: white">
+                          <ol class="fs-5 mb-4">
+                              <img src="/assets/images/imageprivilege.png" title="Privilege Escalation" style="width:25%;height:60%;float: right;margin-right: 150px">
+                            <li><a href=" https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS" target="_blank">LinPeas</a></li>
+                            <li><a href="https://github.com/rebootuser/LinEnum" target="_blank">LinEnum</a></li>
+                            <li><a href="https://github.com/mzet-/linux-exploit-suggester" target="_blank">LES (Linux Exploit Suggester)</a></li>
+                            <li><a href="https://github.com/diego-treitos/linux-smart-enumeration" target="_blank">Linux Smart Enumeration</a></li>       <li><a href="https://github.com/linted/linuxprivchecker" target="_blank">Linux Priv Checker</a></li>
+                          </ol>
+                          <br>
+
+
+        <h2> Manual Enumeration Commands</h2>
+
+        <p class="fs-5 mb-4">                 These basic commands can be used to discover misconfigurations which can lead to privilege escalation. Depending on the target environment some commands can be restricted, for example the /etc/shadow file is usually protected.</p>
+                          <table class="table table-bordered table-dark">
+                            <thead>
+                              <tr>
+                                <th scope="col">Command</th>
+                                <th scope="col">Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>hostname</td>
+                                <td>prints the hostname of target machine</td>
+                              </tr>
+                              <tr>
+                                <td>uname -a</td>
+                                <td>prints target kernel information</td>
+                              </tr>
+                              <tr>
+                                <td>cat /proc/version</td>
+                                <td>returns more detailed information on kernel version</td>
+                              </tr>
+                              <tr>
+                                <td>cat /etc/issue</td>
+                                <td>more OS information</td>
+                              </tr>
+                              <tr>
+                                <td>cat /etc/passwd</td>
+                                <td>lists users found on the target system</td>
+                              </tr>
+                              <tr>
+                                <td>cat /etc/shadow</td>
+                                <td>lists password hashes of system users</td>
+                              </tr>
+                              <tr>
+                                <td>ps aux</td>
+                                <td>shows running processes for all users</td>
+                              </tr>
+                              <tr>
+                                <td>sudo -l</td>
+                                <td>lists commands the current user can run as sudo</td>
+                              </tr>
+                              <tr>
+                                <td>env</td>
+                                <td>prints system environment variables</td>
+                              </tr>
+                              <tr>
+                                <td>ls -la</td>
+                                <td>lists current directory files, including hidden binaries</td>
+                              </tr>
+                              <tr>
+                                <td>netstat -ltp</td>
+                                <td>shows network interfaces and routes</td>
+                              </tr>
+                              <tr>
+                                <td>netstat -ano</td>
+                                <td>shows network sockets and timers without name resolution</td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+
+
+                        </section>
+                    </article>
+
+                </div>
+                <!-- Side widgets-->
+                <div class="col-lg-4">
+                  <br>
+                  <br>
+                    <!-- Search widget-->
+                    <div class="card mb-4" style="background-color: #212529">
+                        <div class="card-header" style="color: white">Search</div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Categories widget-->
+                    <div class="card mb-4" style="background-color: #212529">
+                        <div class="card-header" style="color: white">Privilege Escalation Vectors</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li><a href="#!">Sudo</a></li>
+                                        <li><a href="#!">Kernel exploits</a></li>
+                                        <li><a href="#!">SUID</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6" style="background-color: #212529">
+                                    <ul class="list-unstyled mb-0">
+                                        <li><a href="#!">Capabilities</a></li>
+                                        <li><a href="#!">Cron Jobs</a></li>
+                                        <li><a href="#!">PATH</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Side widget-->
+                    <div class="card mb-4" style="background-color: #212529">
+                        <div class="card-header" style="color: white">Widget</div>
+                        <div class="card-body" style="color: white">something can go here</div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+ <br> <br>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark fixed-bottom">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Dan Mounter 2022</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

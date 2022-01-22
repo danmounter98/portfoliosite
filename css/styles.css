@@ -599,7 +599,7 @@ progress {
 }
 
 .img-fluid {
-  max-width: 100%;
+  max-width: 80%;
   height: auto;
 }
 
@@ -11381,3 +11381,4 @@ filter: blur(2px)}
   transition: .2s ease;
   backface-visibility: hidden;
 }
+.table-hover {}
