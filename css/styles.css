@@ -4889,7 +4889,7 @@ textarea.form-control-lg {
   font-size: 1.1em;
   font-weight: 700;
   line-height: 1;
-  color: #fff;
+  color: #BB86FC;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
@@ -6478,7 +6478,7 @@ textarea.form-control-lg {
   color: #f8f9fa;
 }
 .link-light:hover, .link-light:focus {
-  color: #f9fafb;
+  color: #BB86FC;
 }
 
 .link-dark {
@@ -7816,6 +7816,7 @@ textarea.form-control-lg {
 .bg-secondary {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-secondary-rgb), var(--bs-bg-opacity)) !important;
+  color: #FFF;
 }
 
 .bg-success {
