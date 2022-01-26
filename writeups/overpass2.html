@@ -1,160 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Dan Mounter</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="/css/styles.css" rel="stylesheet" />
-    </head>
-    <body>
-        <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="/index.html">Dan Mounter</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page" href="/index.html">CTF Writeups</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/techniques.html">Techniques</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
-
-                    </ul>
-                </div>
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <title>Dan Mounter</title>
+      <!-- Favicon-->
+      <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png" />
+      <!-- Core theme CSS (includes Bootstrap)-->
+      <link href="/css/styles.css" rel="stylesheet" />
+   </head>
+   <body>
+      <!-- Responsive navbar-->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+         <div class="container">
+            <a class="navbar-brand" href="/index.html">Dan Mounter</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
+                  <li class="nav-item"><a class="nav-link" aria-current="page" href="/index.html">CTF Writeups</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/techniques.html">Techniques</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
+               </ul>
             </div>
-        </nav>
-        <!-- Page content-->
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-12">
-                    <!-- Post content-->
-                    <article>
-                      <br>
-                      <br>
-                        <!-- Post header-->
-                        <header class="mb-4">
-                            <!-- Post title-->
-                            <h1 class="fw-bolder mb-1" style="color: white">CTF Writeups | Overpass2 </h1>
-                        </header>
-
-                        <!-- Post content-->
-                        <section class="mb-5" style="color: white">
-                          <div class="content" itemprop="articleBody">
-                                 <p class="fs-5 mb-4">26/09/21 | Box Difficulty: <span style="color:#F28C28	">Medium</span>
-                                 </p>
-                                 <h2 class="fw-bolder mb-4 mt-5">Disclaimer</h2>
-                                 <b style="color: red"class="fs-5 mb-4">This article/walkthrough is for informational and educational purposes only. Exploiting information in this website to gain unauthorised access to devices you do not own is illegal and can result in criminal charges. I will not accept responsibility for misuse of this content as you are liable for your own actions. </b>
-
-                                 <h2 class="fw-bolder mb-4 mt-5">Introduction</h2>
-                                 <p class="fs-5 mb-4">This is a walkthrough for the Overpass 2 room on <a href="https://tryhackme.com/room/overpass2hacked" target="_blank">TryHackMe.com</a>. This room supplied a packet capture file for forensic analysis. I was assigned the IP address <b>10.10.101.178.</b> </p>
-
-                                 <h2 class="fw-bolder mb-4 mt-5">#1: PCAP Analysis</h2>
-                                 <p class="fs-5 mb-4">Using Wireshark as an analysis tool, we can view the contents of the supplied PCAP file.
-                                 Packet 14 first stands out as interesting because it’s a HTTP POST request, meaning data is sent from client to server. </p>
-                                 <img src="/assets/images/Overpass2/follow%20%20HTTP%20stream%20cropped.png" title="Follow HTTP stream" style="width:80%;height:80%;">
-                                 <p class="fs-5 mb-4">Following this packet's HTTP shows a suspicous payload.php file in the /development/uploads directory, as seen in the screenshot below.
-                                 </p>
-                                 <p class="fs-5 mb-4">
-                                   <img src="/assets/images/Overpass2/http%20stream.png" alt="#" title="HTTP stream" style="width:80%;height:80%;">
-                                 </p>
-                                 <p class="fs-5 mb-4">Now that we know a payload was uploaded and executed, we can search other packets for evidence of data transmission. TCP packets with PSH and ACK flags indicate communication.</p>
-                                 <img src="/assets/images/Overpass2/follow%20TCP%20stream%20cropped.png" alt="#" title="Follow TCP stream" style="width:80%;height:80%;">
-                                 <p class="fs-5 mb-4">Packet 36 displays these flags, following this TCP stream displays commands used by the attacker. From this stream we can view the output of commands executed against the target machine, including enumeration and privesc against the user “James”.</p>
-                                 <p class="fs-5 mb-4">
-                                   <img src="/assets/images/Overpass2/PSH,%20ACK%20TCP%20steam.png"   title="Attacker privesc" style="width:80%;height:80%;">
-                                 </p>
-                                 <p class="fs-5 mb-4">Continuing in the same TCP stream,  we discover that the attacker dumped the /etc/shadow file, revealing more system password hashes. Once the attacker was inside James’s root account, persistence was established through the creation of a SSH backdoor. The SSH backdoor cloned to the target machine can be found <a href="https://github.com/NinjaJc01/ssh-backdoor" target="_blank">here</a>. </p>
-                                 <p class="fs-5 mb-4">
-                                   <img src="/assets/images/Overpass2/cloning%20backdoor.png"   title="Shadow file dump and backdoor clone" style="width:80%;height:80%;">
-                                 </p>
-
-                                  <h2 class="fw-bolder mb-4 mt-5">#2: Hash Cracking</h2>
-                                 <p class="fs-5 mb-4">Further lines display a custom hash being provided to execute the backdoor, highlighted in the screenshot below.</p>
-                                 <p class="fs-5 mb-4">
-                                   <img src="/assets/images/Overpass2/more%20TCP%20Stream.png"   title="Execute backdoor" style="width:80%;height:80%;">
-                                 </p>
-
-                                   <p class="fs-5 mb-4">The GitHub repository for this backdoor includes a <a href="https://github.com/NinjaJc01/ssh-backdoor//blob/master/main.go" target="_blank">main.go</a> file, examining this confirms the default hash string to be SHA512. Further down in this file, the hardcoded salt is discovered.</p>
-
-
-
-
-                                 <p class="fs-5 mb-4">
-                                   <img src="/assets/images/Overpass2/precoded%20salt%20cropped.png" title="Hardcoded salt" style="width:80%;height:80%;">
-                                 </p>
-
-
-                                 <p class="fs-5 mb-4">Combining the SHA512 hash found in the PCAP with the default salt found in the backdoor script, we can decrypt what password was used.  Analying the backdoor source code shows the format must be $hash:$salt. </p>
-                                 <p class="fs-5 mb-4">
-                                   <img src="/assets/images/Overpass2/hash%20format.png"   title="Backdoor hash format" style="width:80%;height:80%;">
-                                 </p>
-
-                                 <pre style='color:#55cc66;background:#001800;'>hashcat <span style='color:#808030; '>-</span>m1710 <span style='color:#808030; '>-</span>a0 <span style='color:#808030; '>-</span>o cracked<span style='color:#808030; '>.</span>txt hash<span style='color:#808030; '>.</span>txt <span style='color:#808030; '>/</span>home<span style='colors:#808030; '>/</span>kali<span style='color:#808030; '>/</span>wordlists<span style='color:#808030; '>/</span>rockyou<span style='color:#808030; '>.</span>txt </pre>
-
-                                 <p class="fs-5 mb-4">The flags used in the hashcat syntax are as follows:</p>
-                                 <ul class="fs-5 mb-4">
-                                   <li>-m1710 sets the hashmode as a salted SHA512  </li>
-                                   <li>-a0 single attack mode </li>
-                                   <li>-o specifies an output file</li>
-                                   <li>hash.txt file</li>
-                                   <li>path to rockyou.txt</li>
-                                 </ul>
-
-                                 <p class="fs-5 mb-4">Running this hashcat command will eventutually output the password used by the attacker to compromise this system.</p>
-
-                                 <p class="fs-5 mb-4">
-                                 <img src="/assets/images/Overpass2/cracked%20SHA512%20hash.png"   title="Cracked hash">
-                                 </p>
-
-
-
-
-
-                                 <h2 class="fw-bolder mb-4 mt-5">#3: Initial Access</h2>
-                                 <p class="fs-5 mb-4">Now we have a username and a password, we can launch the vulnerable machine and begin service enumeration to discover any vulnerabilites we can leverage. </p>
-
-                                 <pre style='color:#55cc66;background:#001800;'>nmap <span style='color:#808030; '>-</span>sV <span style='color:#808030; '>-</span>sC <span style='color:#808030; '>-</span>Pn <span style='color:#778c77; '>10.10</span><span style='color:#808030; '>.</span><span style='color:#778c77; '>101.178</span></pre>
-                                 <img src="/assets/images/Overpass2/nmap%20scan.png"   title="Nmap scan">
-                                 <p class="fs-5 mb-4">A quick Nmap scan shows three open ports, an Apache webserver on port 80 and two SSH services on port 22 and 2222. Port 2222 does not run SSH by default, so this the first point of interest.</p>
-                                 <p class="fs-5 mb-4">Using our discovered credentials to login through SSH hosted on port 22 did not work, however changing the port to 2222 was successful. Upon logging in, we can now access the user flag in the /home/james directory.</p>
-
-                                 <pre style='color:#55cc66;background:#001800;'>ssh <span style='color:#808030; '>-</span>p <span style='color:#778c77; '>2222</span> james<span style='color:#808030; '>@</span><span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>101</span>.<span style='color:#778c77; '>178</span></pre>
-
-                                 <h2 class="fw-bolder mb-4 mt-5">#4: Privilege Escalation</h2>
-                                 <p class="fs-5 mb-4">Using the ls -la command displays a list of hidden binary files, along with their respective owner group. Continuing in the /home/james directory, we find a .suid_bash file left by the attacker; likely to access root again without a password.</p>
-                                 <p class="fs-5 mb-4">
-                                   <img src="/assets/images/Overpass2/exploitable%20binary.png"   title="Exploitable binary found">
-                                 </p>
-                                 <p class="fs-5 mb-4">Searching <a href="https://gtfobins.github.io/gtfobins/bash/#suid" target="_blank">GTFOBins</a> for Bash SUID commands shows exactly how this binary can be exploited to elevate privileges.</p>
-                                 <p class="fs-5 mb-4">
-                                   <img src="/assets/images/Overpass2/gtfobins.png"   title="GTFOBins exploit">
-                                 </p>
-                                 <p class="fs-5 mb-4">Now knowing this is a SUID backdoor, we can execute it with the -p tag to interact with this existing binary. We are now root and can retreive the final flag in /root directory</p>
-                                 <p class="fs-5 mb-4">
-                                   <img src="/assets/images/Overpass2/root.png"   title="Root">
-                                 </p>
-                                 <br>
-                                   <br>
-                                   <br>
-                                   <br>
-                               </div>
-                        </section>
-                    </article>
-
-                </div>
-
-        <!-- Footer-->
-      <!--<footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Dan Mounter 2022</p></div>
-        </footer>-->
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-    </body>
+         </div>
+      </nav>
+      <!-- Page content-->
+      <div class="container mt-5">
+         <div class="row">
+            <div class="col-lg-12">
+               <!-- Post content-->
+               <article>
+                  <br>
+                  <br>
+                  <!-- Post header-->
+                  <header class="mb-4">
+                     <!-- Post title-->
+                     <h1 class="fw-bolder mb-1" style="color: white">CTF Writeups | Overpass2 </h1>
+                  </header>
+                  <!-- Post content-->
+                  <section class="mb-5" style="color: white">
+                     <div class="content" itemprop="articleBody">
+                        <p class="fs-5 mb-4">26/09/21 | Box Difficulty: <span style="color:#F28C28	">Medium</span>
+                        </p>
+                        <h2 class="fw-bolder mb-4 mt-5">Disclaimer</h2>
+                        <b style="color: red"class="fs-5 mb-4">This article/walkthrough is for informational and educational purposes only. Exploiting information in this website to gain unauthorised access to devices you do not own is illegal and can result in criminal charges. I will not accept responsibility for misuse of this content as you are liable for your own actions. </b>
+                        <h2 class="fw-bolder mb-4 mt-5">Introduction</h2>
+                        <p class="fs-5 mb-4">This is a walkthrough for the Overpass 2 room on <a href="https://tryhackme.com/room/overpass2hacked" target="_blank">TryHackMe.com</a>. This room supplied a packet capture file for forensic analysis. I was assigned the IP address <b>10.10.101.178.</b> </p>
+                        <h2 class="fw-bolder mb-4 mt-5">#1: PCAP Analysis</h2>
+                        <p class="fs-5 mb-4">Using Wireshark as an analysis tool, we can view the contents of the supplied PCAP file.
+                           Packet 14 first stands out as interesting because it’s a HTTP POST request, meaning data is sent from client to server.
+                        </p>
+                        <img src="/assets/images/Overpass2/follow%20%20HTTP%20stream%20cropped.png" title="Follow HTTP stream" style="width:80%;height:80%;">
+                        <p class="fs-5 mb-4">Following this packet's HTTP shows a suspicous payload.php file in the /development/uploads directory, as seen in the screenshot below.
+                        </p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/http%20stream.png" alt="#" title="HTTP stream" style="width:80%;height:80%;">
+                        </p>
+                        <p class="fs-5 mb-4">Now that we know a payload was uploaded and executed, we can search other packets for evidence of data transmission. TCP packets with PSH and ACK flags indicate communication.</p>
+                        <img src="/assets/images/Overpass2/follow%20TCP%20stream%20cropped.png" alt="#" title="Follow TCP stream" style="width:80%;height:80%;">
+                        <p class="fs-5 mb-4">Packet 36 displays these flags, following this TCP stream displays commands used by the attacker. From this stream we can view the output of commands executed against the target machine, including enumeration and privesc against the user “James”.</p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/PSH,%20ACK%20TCP%20steam.png"   title="Attacker privesc" style="width:80%;height:80%;">
+                        </p>
+                        <p class="fs-5 mb-4">Continuing in the same TCP stream,  we discover that the attacker dumped the /etc/shadow file, revealing more system password hashes. Once the attacker was inside James’s root account, persistence was established through the creation of a SSH backdoor. The SSH backdoor cloned to the target machine can be found <a href="https://github.com/NinjaJc01/ssh-backdoor" target="_blank">here</a>. </p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/cloning%20backdoor.png"   title="Shadow file dump and backdoor clone" style="width:80%;height:80%;">
+                        </p>
+                        <h2 class="fw-bolder mb-4 mt-5">#2: Hash Cracking</h2>
+                        <p class="fs-5 mb-4">Further lines display a custom hash being provided to execute the backdoor, highlighted in the screenshot below.</p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/more%20TCP%20Stream.png"   title="Execute backdoor" style="width:80%;height:80%;">
+                        </p>
+                        <p class="fs-5 mb-4">The GitHub repository for this backdoor includes a <a href="https://github.com/NinjaJc01/ssh-backdoor//blob/master/main.go" target="_blank">main.go</a> file, examining this confirms the default hash string to be SHA512. Further down in this file, the hardcoded salt is discovered.</p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/precoded%20salt%20cropped.png" title="Hardcoded salt" style="width:80%;height:80%;">
+                        </p>
+                        <p class="fs-5 mb-4">Combining the SHA512 hash found in the PCAP with the default salt found in the backdoor script, we can decrypt what password was used.  Analying the backdoor source code shows the format must be $hash:$salt. </p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/hash%20format.png"   title="Backdoor hash format" style="width:80%;height:80%;">
+                        </p>
+                        <pre style='color:#55cc66;background:#001800;'>hashcat <span style='color:#808030; '>-</span>m1710 <span style='color:#808030; '>-</span>a0 <span style='color:#808030; '>-</span>o cracked<span style='color:#808030; '>.</span>txt hash<span style='color:#808030; '>.</span>txt <span style='color:#808030; '>/</span>home<span style='colors:#808030; '>/</span>kali<span style='color:#808030; '>/</span>wordlists<span style='color:#808030; '>/</span>rockyou<span style='color:#808030; '>.</span>txt </pre>
+                        <p class="fs-5 mb-4">The flags used in the hashcat syntax are as follows:</p>
+                        <ul class="fs-5 mb-4">
+                           <li>-m1710 sets the hashmode as a salted SHA512  </li>
+                           <li>-a0 single attack mode </li>
+                           <li>-o specifies an output file</li>
+                           <li>hash.txt file</li>
+                           <li>path to rockyou.txt</li>
+                        </ul>
+                        <p class="fs-5 mb-4">Running this hashcat command will eventutually output the password used by the attacker to compromise this system.</p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/cracked%20SHA512%20hash.png"   title="Cracked hash">
+                        </p>
+                        <h2 class="fw-bolder mb-4 mt-5">#3: Initial Access</h2>
+                        <p class="fs-5 mb-4">Now we have a username and a password, we can launch the vulnerable machine and begin service enumeration to discover any vulnerabilites we can leverage. </p>
+                        <pre style='color:#55cc66;background:#001800;'>nmap <span style='color:#808030; '>-</span>sV <span style='color:#808030; '>-</span>sC <span style='color:#808030; '>-</span>Pn <span style='color:#778c77; '>10.10</span><span style='color:#808030; '>.</span><span style='color:#778c77; '>101.178</span></pre>
+                        <img src="/assets/images/Overpass2/nmap%20scan.png"   title="Nmap scan">
+                        <p class="fs-5 mb-4">A quick Nmap scan shows three open ports, an Apache webserver on port 80 and two SSH services on port 22 and 2222. Port 2222 does not run SSH by default, so this the first point of interest.</p>
+                        <p class="fs-5 mb-4">Using our discovered credentials to login through SSH hosted on port 22 did not work, however changing the port to 2222 was successful. Upon logging in, we can now access the user flag in the /home/james directory.</p>
+                        <pre style='color:#55cc66;background:#001800;'>ssh <span style='color:#808030; '>-</span>p <span style='color:#778c77; '>2222</span> james<span style='color:#808030; '>@</span><span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>101</span>.<span style='color:#778c77; '>178</span></pre>
+                        <h2 class="fw-bolder mb-4 mt-5">#4: Privilege Escalation</h2>
+                        <p class="fs-5 mb-4">Using the ls -la command displays a list of hidden binary files, along with their respective owner group. Continuing in the /home/james directory, we find a .suid_bash file left by the attacker; likely to access root again without a password.</p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/exploitable%20binary.png"   title="Exploitable binary found">
+                        </p>
+                        <p class="fs-5 mb-4">Searching <a href="https://gtfobins.github.io/gtfobins/bash/#suid" target="_blank">GTFOBins</a> for Bash SUID commands shows exactly how this binary can be exploited to elevate privileges.</p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/gtfobins.png"   title="GTFOBins exploit">
+                        </p>
+                        <p class="fs-5 mb-4">Now knowing this is a SUID backdoor, we can execute it with the -p tag to interact with this existing binary. We are now root and can retreive the final flag in /root directory</p>
+                        <p class="fs-5 mb-4">
+                           <img src="/assets/images/Overpass2/root.png"   title="Root">
+                        </p>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                     </div>
+                  </section>
+               </article>
+            </div>
+         </div>
+      </div>
+      <!-- Footer-->
+      <footer class="py-5 bg-dark static-bottom">
+         <div class="container">
+            <p class="m-0 text-center text-white">
+               Copyright &copy; Dan Mounter <script>document.write(new Date().getFullYear())</script>
+            </p>
+         </div>
+      </footer>
+      <!-- Bootstrap core JS-->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- Core theme JS-->
+      <script src="js/scripts.js"></script>
+   </body>
 </html>

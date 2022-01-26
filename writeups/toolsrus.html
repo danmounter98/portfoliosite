@@ -1,155 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Dan Mounter</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="/css/styles.css" rel="stylesheet" />
-    </head>
-    <body>
-        <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="/index.html">Dan Mounter</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page" href="/index.html">CTF Writeups</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/techniques.html">Techniques</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
-
-                    </ul>
-                </div>
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <title>Dan Mounter</title>
+      <!-- Favicon-->
+      <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png" />
+      <!-- Core theme CSS (includes Bootstrap)-->
+      <link href="/css/styles.css" rel="stylesheet" />
+   </head>
+   <body>
+      <!-- Responsive navbar-->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+         <div class="container">
+            <a class="navbar-brand" href="/index.html">Dan Mounter</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
+                  <li class="nav-item"><a class="nav-link" aria-current="page" href="/index.html">CTF Writeups</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/techniques.html">Techniques</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
+               </ul>
             </div>
-        </nav>
-        <!-- Page content-->
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-12">
-                    <!-- Post content-->
-                    <article>
-                      <br>
-                      <br>
-                        <!-- Post header-->
-                        <header class="mb-4">
-                            <!-- Post title-->
-                            <h1 class="fw-bolder mb-1" style="color: white">CTF Writeups | Zeno </h1>
-                        </header>
-
-                        <!-- Post content-->
-                        <section class="mb-5" style="color: white">
-                          <div class="content" itemprop="articleBody">
-                <p class="fs-5 mb-4">02/11/21 | Box Difficulty: <span style="color:#00FF7F">Easy</span>
-                </p>
-                <h2 2 class="fw-bolder mb-4 mt-5">Disclaimer</h2>
-                <b style="color: red" class="fs-5 mb-4">This article/walkthrough is for informational and educational purposes only. Exploiting information in this website to gain unauthorised access to devices you do not own is illegal and can result in criminal charges. I will not accept responsibility for misuse of this content as you are liable for your own actions. </b>
-
-                <h2 class="fw-bolder mb-4 mt-5">Introduction</h2>
-         <p class="fs-5 mb-4">This is a walkthrough for the ToolsRUs room on <a href="https://tryhackme.com/room/toolsrus" target="_blank">TryHackMe.com</a>. I was assigned the IP address <b>10.10.58.84.</b>
-
-         <h2 class="fw-bolder mb-4 mt-5">#1: Nmap Scanning</h2>
-         <p class="fs-5 mb-4">To begin, we start with an Nmap scan of the target machine. Using the -sV, -sC and -vv flags to perform a service version scan with high verbosity.</p>
-
-
-         <p class="fs-5 mb-4"><img src="/assets/images/Toolsrus/nmap.png" title="Nmap scan" style="width:90%;height:90%;"></p>
-
-         <p class="fs-5 mb-4">The following open ports were found: </p>
-         <ul class="fs-5 mb-4">
-           <li>Port 22 - OpenSSH 7.2p2 </li>
-           <li>Port 80 - Apache Web Server 2.4.18 </li>
-           <li>Port 1234 - Apache-Coyote 1.1 / Apache Tomcat/7.0.88</li>
-           <li>Port 8009 - A MYSQL database</li>
-         </ul>
-
-
-         <h2 class="fw-bolder mb-4 mt-5">#2: Directory Enumeration</h2>
-         <p class="fs-5 mb-4">Knowing web servers are involved, we launch a Gobuster scan on port 80. This retreives a list of directories available.</p>
-
-        <p class="fs-5 mb-4"><img src="/assets/images/Toolsrus/gobuster.png" alt="#" title="Gobuster" style="width:80%;height:80%;"></p>
-
-         <p class="fs-5 mb-4">The /guidelines directory contains interesting text, including a username and the possiblity of a vulnerable TomCat server, seen in the screenshot below.</p>
-         <p class="fs-5 mb-4">
-           <img src="/assets/images/Toolsrus/gobuster.png" title="Guidelines Page Content" style="width:60%;height:60%;">
-         </p>
-         <h2 class="fw-bolder mb-4 mt-5">#3: Password Cracking</h2>
-         <p class="fs-5 mb-4">As it may suggest, the /protected directory requires credentials to access. Now we have a username (bob) we can use Hydra to crack this simple HTTP login page.</p>
-         <p class="fs-5 mb-4">The flags used in the Hydra syntax are as follows:</p>
-         <ul class="fs-5 mb-4">
-           <li>-l sets username</li>
-           <li>-P path to wordlist</li>
-           <li>-t 1 sets single parallel connection</li>
-           <li>-f exits after found password</li>
-           <li>HTTP-GET sets protocol</li>
-         </ul>
-
- <!--Created using ToHtml.com on 2021-10-02 12:05:07 UTC -->
-         <p class="fs-5 mb-4">
-           <img src="/assets/images/Toolsrus/hydra.png" title="Hydra Output" style="width:90%;height:90%;">
-         </p>
-
-         <h2 class="fw-bolder mb-4 mt-5">#4: Further Service Enumeration</h2>
-         <p class="fs-5 mb-4">We can now use these credentials to access the webserver on port 80. However, despite these credentials working successfully we are presenting that the content of this page has moved to a different port.</p>
-         <p class="fs-5 mb-4">
-           <img src="/assets/images/Toolsrus/login.png" title="Page Moved" style="width:60%;height:60%;">
-         </p>
-         <p class="fs-5 mb-4">Knowing from our Nmap scan that there is another webserver on port 1234, it's likely this is the content location. We can use Nikto to directly scan port 1234 to enumerate service versions and available directories. </p>
-
-         <pre style='color:#55cc66;background:#001800;'>nikto <span style='color:#808030; '>-</span>h <span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>58</span>.<span style='color:#778c77; '>84</span><span style='color:#808030; '>:</span><span style='color:#778c77; '>1234</span></pre>
- <!--Created using ToHtml.com on 2021-10-02 12:07:41 UTC -->
-         <p class="fs-5 mb-4">
-           <img src="/assets/images/Toolsrus/nikto.png" title="Nikto Scan" style="width:90%;height:90%;">
-         </p>
-         <p class="fs-5 mb-4">The output of this Nikto scan shows a default interface configured at /manager/html.</p>
-         <p class="fs-5 mb-4"> Navigating to http://10.10.58.84:1234/manager/html presents us with a login page. We can use the credentials to successfully login to the Tomcat web applciation manager, as seen in the screenshot below. </p>
-
-         <p class="fs-5 mb-4">
-           <img src="/assets/images/Toolsrus/successful%20login.png"   title="Tomcat Web Application Manager" style="width:80%;height:80%;">
-         </p>
-
-         <p class="fs-5 mb-4">The Tomcat version can be located under the server information section of this site, a quick google search confirms this version to be vulnerable. Version 7.0.88 of Tomcat is vulnerable to <a href="https://nvd.nist.gov/vuln/detail/CVE-2009-3548" target="_blank">CVE-2009-3548</a>.
-
-         <p class="fs-5 mb-4">
-         <img src="/assets/images/Toolsrus/service%20info.png" title="Service Version"style="width:80%;height:80%;">
-         </p>
-         <p class="fs-5 mb-4">This is a very basic vulnerabilty which involves exploiting default administration credentials to gain root access.</p>
-
-         <p class="fs-5 mb-4">Further researching this, we find a metasploit exploit which can leverage this vulnerablilty. The Exploit-DB payload along with details can be found <a href="https://www.exploit-db.com/exploits/31433 " target="_blank">here</a>.</p>
-
-
-         <h2 class="fw-bolder mb-4 mt-5">#5: Metasploit Exploitation</h2>
-         <p class="fs-5 mb-4>As described in the payload source, this module executes a payload on Apache Tomcat servers that
-         have an exposed "manager" application. The payload is uploaded as a WAR archive
-         containing a jsp application using a POST request against the /manager/html/upload
-         component.</p>
-
-         <p class="fs-5 mb-4">After opening msfconsole, we can navigate to the exploit module through use exploit/multi/http/tomcat_mgr_upload. Showing options reveal the required variables, including RHOST, RPORT, LPORT and valid HTTP credentials.</p>
-         <img src="/assets/images/Toolsrus/filled%20options.png" title="Configuring Metasploit Payload">
-         <p class="fs-5 mb-4">After inputting required variables, we can run the exploit. As seen in the following screenshot, we are returned with a meterpreter shell with root privileges.</p>
-         <p class="fs-5 mb-4">
-           <img src="/assets/images/Toolsrus/root.png" title="Successful Exploit">
-         </p>
-
-           <br>
-           <br>
-           <br>
-                        </section>
-                    </article>
-
-                </div>
-
-        <!-- Footer-->
-      <!--<footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Dan Mounter 2022</p></div>
-        </footer>-->
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-    </body>
+         </div>
+      </nav>
+      <!-- Page content-->
+      <div class="container mt-5">
+      <div class="row">
+         <div class="col-lg-12">
+            <!-- Post content-->
+            <article>
+               <br>
+               <br>
+               <!-- Post header-->
+               <header class="mb-4">
+                  <!-- Post title-->
+                  <h1 class="fw-bolder mb-1" style="color: white">CTF Writeups | Zeno </h1>
+               </header>
+               <!-- Post content-->
+               <section class="mb-5" style="color: white">
+                  <div class="content" itemprop="articleBody">
+                     <p class="fs-5 mb-4">02/11/21 | Box Difficulty: <span style="color:#00FF7F">Easy</span>
+                     </p>
+                     <h2 2 class="fw-bolder mb-4 mt-5">Disclaimer</h2>
+                     <b style="color: red" class="fs-5 mb-4">This article/walkthrough is for informational and educational purposes only. Exploiting information in this website to gain unauthorised access to devices you do not own is illegal and can result in criminal charges. I will not accept responsibility for misuse of this content as you are liable for your own actions. </b>
+                     <h2 class="fw-bolder mb-4 mt-5">Introduction</h2>
+                     <p class="fs-5 mb-4">This is a walkthrough for the ToolsRUs room on <a href="https://tryhackme.com/room/toolsrus" target="_blank">TryHackMe.com</a>. I was assigned the IP address <b>10.10.58.84.</b>
+                     <h2 class="fw-bolder mb-4 mt-5">#1: Nmap Scanning</h2>
+                     <p class="fs-5 mb-4">To begin, we start with an Nmap scan of the target machine. Using the -sV, -sC and -vv flags to perform a service version scan with high verbosity.</p>
+                     <p class="fs-5 mb-4"><img src="/assets/images/Toolsrus/nmap.png" title="Nmap scan" style="width:90%;height:90%;"></p>
+                     <p class="fs-5 mb-4">The following open ports were found: </p>
+                     <ul class="fs-5 mb-4">
+                        <li>Port 22 - OpenSSH 7.2p2 </li>
+                        <li>Port 80 - Apache Web Server 2.4.18 </li>
+                        <li>Port 1234 - Apache-Coyote 1.1 / Apache Tomcat/7.0.88</li>
+                        <li>Port 8009 - A MYSQL database</li>
+                     </ul>
+                     <h2 class="fw-bolder mb-4 mt-5">#2: Directory Enumeration</h2>
+                     <p class="fs-5 mb-4">Knowing web servers are involved, we launch a Gobuster scan on port 80. This retreives a list of directories available.</p>
+                     <p class="fs-5 mb-4"><img src="/assets/images/Toolsrus/gobuster.png" alt="#" title="Gobuster" style="width:80%;height:80%;"></p>
+                     <p class="fs-5 mb-4">The /guidelines directory contains interesting text, including a username and the possiblity of a vulnerable TomCat server, seen in the screenshot below.</p>
+                     <p class="fs-5 mb-4">
+                        <img src="/assets/images/Toolsrus/gobuster.png" title="Guidelines Page Content" style="width:60%;height:60%;">
+                     </p>
+                     <h2 class="fw-bolder mb-4 mt-5">#3: Password Cracking</h2>
+                     <p class="fs-5 mb-4">As it may suggest, the /protected directory requires credentials to access. Now we have a username (bob) we can use Hydra to crack this simple HTTP login page.</p>
+                     <p class="fs-5 mb-4">The flags used in the Hydra syntax are as follows:</p>
+                     <ul class="fs-5 mb-4">
+                        <li>-l sets username</li>
+                        <li>-P path to wordlist</li>
+                        <li>-t 1 sets single parallel connection</li>
+                        <li>-f exits after found password</li>
+                        <li>HTTP-GET sets protocol</li>
+                     </ul>
+                     <!--Created using ToHtml.com on 2021-10-02 12:05:07 UTC -->
+                     <p class="fs-5 mb-4">
+                        <img src="/assets/images/Toolsrus/hydra.png" title="Hydra Output" style="width:90%;height:90%;">
+                     </p>
+                     <h2 class="fw-bolder mb-4 mt-5">#4: Further Service Enumeration</h2>
+                     <p class="fs-5 mb-4">We can now use these credentials to access the webserver on port 80. However, despite these credentials working successfully we are presenting that the content of this page has moved to a different port.</p>
+                     <p class="fs-5 mb-4">
+                        <img src="/assets/images/Toolsrus/login.png" title="Page Moved" style="width:60%;height:60%;">
+                     </p>
+                     <p class="fs-5 mb-4">Knowing from our Nmap scan that there is another webserver on port 1234, it's likely this is the content location. We can use Nikto to directly scan port 1234 to enumerate service versions and available directories. </p>
+                     <pre style='color:#55cc66;background:#001800;'>nikto <span style='color:#808030; '>-</span>h <span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>10</span>.<span style='color:#778c77; '>58</span>.<span style='color:#778c77; '>84</span><span style='color:#808030; '>:</span><span style='color:#778c77; '>1234</span></pre>
+                     <!--Created using ToHtml.com on 2021-10-02 12:07:41 UTC -->
+                     <p class="fs-5 mb-4">
+                        <img src="/assets/images/Toolsrus/nikto.png" title="Nikto Scan" style="width:90%;height:90%;">
+                     </p>
+                     <p class="fs-5 mb-4">The output of this Nikto scan shows a default interface configured at /manager/html.</p>
+                     <p class="fs-5 mb-4"> Navigating to http://10.10.58.84:1234/manager/html presents us with a login page. We can use the credentials to successfully login to the Tomcat web applciation manager, as seen in the screenshot below. </p>
+                     <p class="fs-5 mb-4">
+                        <img src="/assets/images/Toolsrus/successful%20login.png"   title="Tomcat Web Application Manager" style="width:80%;height:80%;">
+                     </p>
+                     <p class="fs-5 mb-4">The Tomcat version can be located under the server information section of this site, a quick google search confirms this version to be vulnerable. Version 7.0.88 of Tomcat is vulnerable to <a href="https://nvd.nist.gov/vuln/detail/CVE-2009-3548" target="_blank">CVE-2009-3548</a>.
+                     <p class="fs-5 mb-4">
+                        <img src="/assets/images/Toolsrus/service%20info.png" title="Service Version"style="width:80%;height:80%;">
+                     </p>
+                     <p class="fs-5 mb-4">This is a very basic vulnerabilty which involves exploiting default administration credentials to gain root access.</p>
+                     <p class="fs-5 mb-4">Further researching this, we find a metasploit exploit which can leverage this vulnerablilty. The Exploit-DB payload along with details can be found <a href="https://www.exploit-db.com/exploits/31433 " target="_blank">here</a>.</p>
+                     <h2 class="fw-bolder mb-4 mt-5">#5: Metasploit Exploitation</h2>
+                     <p class="fs-5 mb-4">As described in the payload source, this module executes a payload on Apache Tomcat servers that
+                        have an exposed "manager" application. The payload is uploaded as a WAR archive
+                        containing a jsp application using a POST request against the /manager/html/upload
+                        component.
+                     </p>
+                     <p class="fs-5 mb-4">After opening msfconsole, we can navigate to the exploit module through use exploit/multi/http/tomcat_mgr_upload. Showing options reveal the required variables, including RHOST, RPORT, LPORT and valid HTTP credentials.</p>
+                     <img src="/assets/images/Toolsrus/filled%20options.png" title="Configuring Metasploit Payload">
+                     <p class="fs-5 mb-4">After inputting required variables, we can run the exploit. As seen in the following screenshot, we are returned with a meterpreter shell with root privileges.</p>
+                     <p class="fs-5 mb-4">
+                        <img src="/assets/images/Toolsrus/root.png" title="Successful Exploit">
+                     </p>
+                     <br>
+                     <br>
+                     <br>
+               </section>
+            </article>
+            </div>
+         </div>
+      </div>
+      <!-- Footer-->
+      <footer class="py-5 bg-dark static-bottom">
+         <div class="container">
+            <p class="m-0 text-center text-white">
+               Copyright &copy; Dan Mounter <script>document.write(new Date().getFullYear())</script>
+            </p>
+         </div>
+      </footer>
+      <!-- Bootstrap core JS-->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- Core theme JS-->
+      <script src="js/scripts.js"></script>
+   </body>
 </html>
